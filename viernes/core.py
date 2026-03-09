@@ -2,23 +2,25 @@
 
 from viernes.personality import Personality
 from viernes.brain import Brain
+from viernes.system import System
 
 
 class Viernes:
     def __init__(self):
         self.personality = Personality()
-        self.brain = Brain(self.personality)
+        self.system = System()
+        self.brain = Brain(self.personality, self.system)
 
         print(self.personality.boot_message())
 
     def run(self):
-        print("Sistema en línea.")
+        print("Viernes iniciado. Esperando comandos.")
 
         while True:
             command = input(">> ")
 
-            if command.lower() == "exit":
-                print(self.personality.shutdown_message())
+            if command.lower().strip() == "salir":
+                print("Apagando sistema.")
                 break
 
             response = self.brain.process(command)

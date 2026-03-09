@@ -1,11 +1,10 @@
 # Created by Henry Matarrita - March 2026
 
-from datetime import datetime
-
 class Brain:
 
-    def __init__(self, personality):
+    def __init__(self, personality, system):
         self.personality = personality
+        self.system = system
         self.commands = {
             "hola": self._greet,
             "estado": self._status,
@@ -14,7 +13,6 @@ class Brain:
 
     def process(self, command: str) -> str:
         command = command.lower().strip()
-
         handler = self.commands.get(command)
 
         if handler:
@@ -32,7 +30,5 @@ class Brain:
         return self.personality.respond("unknown")
     
     def _datetime(self) -> str:
-        now = datetime.now()
-        current_time = now.strftime("%H:%M:%S")
-
-        return f"Hora actual del sistema: {current_time}. Intenta usarla sabiamente."
+        time = self.system.get_time()
+        return self.personality.respond("time", time)

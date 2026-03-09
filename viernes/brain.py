@@ -6,18 +6,30 @@ class Brain:
         self.personality = personality
         self.system = system
         self.commands = {
-            "hola": self._greet,
-            "estado": self._status,
-            "hora": self._datetime, 
-            "ayuda": self._help
+            "hola": {
+                "handler":self._greet,
+                "description": "Saluda al usuario"
+            },
+            "estado":{
+                "handler": self._status,
+                "description": "Muestra el estado del sistema"
+            },
+            "hora":{
+                "handler": self._datetime,
+                "description": "Muestra la hora actual"
+            },
+            "ayuda": {
+                "handler": self._help,
+                "description": "Muestra lista de comandos"
+            }
         }
 
     def process(self, command: str) -> str:
         command = command.lower().strip()   
-        handler = self.commands.get(command)
+        command_data = self.commands.get(command)
 
-        if handler:
-            return handler()
+        if command_data:
+            return command_data["handler"]()
 
         return self._unknown()
 
@@ -35,5 +47,9 @@ class Brain:
         return self.personality.respond("time", time)
     
     def _help(self) -> str:
-        command_list = ", ".join(self.commands.keys())
-        return f"Comandos disponibles: {command_list}"
+        lines = ["Comandos disponibles:\n"]
+
+        for cmd, info in self.commands.items():
+            lines.append(f"{cmd} → {info['description']}")
+
+        return "\n".join(lines)

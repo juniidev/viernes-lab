@@ -23,9 +23,19 @@ class Brain:
                 "description": "Muestra lista de comandos"
             }
         }
-
+        self.aliases ={
+            "hi" : "hola",
+            "hello" : "hola",
+            "time" : "hora",
+            "help" : "ayuda"
+        }
     def process(self, command: str) -> str:
-        command = command.lower().strip()   
+        command = command.lower().strip()
+
+        # traducir alias
+        if command in self.aliases:
+            command = self.aliases[command]
+
         command_data = self.commands.get(command)
 
         if command_data:
